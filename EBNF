@@ -1,15 +1,13 @@
 <command> ::= <create_account> | <deposit> | <withdraw> | <balance> | <exit>
 /*Command types*/
-<create_account> ::= "create_account " <first_name> " " <last_name> (" " <amount>)?
+<create_account> ::= "create_account " <name> " " <name> (" " <amount>)?
 <deposit> ::= "deposit " <amount> " into " <account_number>
 <withdraw> ::= "withdraw " <amount> " from " <account_number>
 <balance> ::= <account_number> " balance"
 <exit> ::= "exit" | "quit"
 
 /*Tokens*/
-<first_name> ::= <letter>+
-<last_name> ::= <letter>+
-/*TODO: Do we want the first two letters have to be capital or lower case?*/
+<name> ::= <letter>+
 <account_number> ::= <letter> <letter> <digit> <digit> <digit> <digit> <digit> <digit>
 <amount> ::= <digit>+ ("." <digit> <digit>?)?
 
