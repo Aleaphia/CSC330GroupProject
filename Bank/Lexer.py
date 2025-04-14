@@ -1,3 +1,6 @@
 class Lexer:
 	def getTokenList(linesOfCode):
-		return 1;	
+		tokenList = []
+		for line in linesOfCode:
+			line			
+		return tokenList	

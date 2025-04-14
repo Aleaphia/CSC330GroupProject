@@ -3,7 +3,7 @@
 <create_account> ::= "create_account " <name> " " <name> (" " <amount>)?
 <deposit> ::= "deposit " <amount> " into " <account_number>
 <withdraw> ::= "withdraw " <amount> " from " <account_number>
-<balance> ::= <account_number> " balance"
+<balance> ::= "balance of " <account_number>
 <exit> ::= "exit" | "quit"
 
 /*Tokens*/
