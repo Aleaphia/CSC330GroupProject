@@ -3,9 +3,9 @@ import Token
 
 class Lexer:
 	_functionPattern = "exit|quit|deposit|withdraw|balance_of|create_account"
-	_accountNumberPattern = "[a-zA-Z]{2}\d{6}"
+	_accountNumberPattern = "[a-zA-Z]{2}\\d{6}"
 	_namePattern = "[a-zA-Z]+"
-	_ammountPattern = 	"\d+(\.\d\d)?"
+	_ammountPattern = 	"\\d+(\\.\\d\\d)?"
 
 	@staticmethod
 	def getTokenList(line):
@@ -17,7 +17,7 @@ class Lexer:
 			raise Exception("No function detected")
 		
 		if (re.search("^create_account", line) != None):
-			if (re.search("^create_account " + Lexer._namePattern + " " + Lexer._namePattern + "( " + Lexer._ammountPattern + ")?$", line) == None):
+			if (re.search("^create_account " + Lexer._accountNumberPattern + " " + Lexer._namePattern + " " + Lexer._namePattern + "( " + Lexer._ammountPattern + ")?$", line) == None):
 				raise Exception("Incorrect account creation format")			
 		
 		elif (re.search("^deposit", line) != None):

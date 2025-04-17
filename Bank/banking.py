@@ -1,4 +1,5 @@
 import Lexer
+import Parser
 
 
 def specification_tests():
@@ -6,25 +7,30 @@ def specification_tests():
     print("Test where used to test Lexer: feel free to change")  
 
     tests = {
-            "create_account Jane Doe",
-            "create_account John Doe 100.50",
+            "create_account JD123456 Jane Doe",
+            "create_account JD123456 John Doe 100.50",
             "deposit 25 into JD123456",
             "withdraw 2.33 from SJ098765",
             "balance_of SA123456",
             "exit",
-            "negative tests"
-            "deposit 40 from JS234234"                                                                                                  
+            "negative tests",
+            "deposit 40 from JS234234",
+            "create_account something Name Too"
              }
     for test in tests:
         print(test)        
         try:
-            for token in Lexer.Lexer.getTokenList(test):
+            tokens = Lexer.Lexer.getTokenList(test)
+            for token in tokens:
                 print(token.value)
-            print()                 
+            print("Parsing output:")
+            for node in Parser.Parser.parseTokens(tokens).nodes:
+                print(node)
+
+            print()
         except Exception as e:
             print(e)
-            print()         
-
+            print()
 def main():
     print("Main is in banking.py")
     specification_tests()

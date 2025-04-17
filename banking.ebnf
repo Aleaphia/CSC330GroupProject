@@ -1,6 +1,6 @@
 <command> ::= <create_account> | <deposit> | <withdraw> | <balance> | <exit>
 /*Command types*/
-<create_account> ::= "create_account " <name> " " <name> (" " <amount>)?
+<create_account> ::= "create_account " <account_number> " " <name> " " <name> (" " <amount>)?
 <deposit> ::= "deposit " <amount> " into " <account_number>
 <withdraw> ::= "withdraw " <amount> " from " <account_number>
 <balance> ::= "balance_of " <account_number>
