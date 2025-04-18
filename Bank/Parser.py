@@ -20,6 +20,10 @@ class Parser:
 					if tokens[i + 3].type != TokenTypes.CUSTOMER_NAME:
 						raise Exception("Excepted a name! Got " + tokens[i + 3].type + ": " + tokens[i + 3].value + " instead! Token #" + (i + 3))
 
+					accountNum = tokens[i + 1].value
+					if accountNum[0] != tokens[i + 2].value[0] or accountNum[1] != tokens[i + 3].value[0]:
+						raise Exception(f"Account number should start with the initials of the owner of the account! Got number {accountNum}, with name {tokens[i+2].value} {tokens[i+3].value}")
+
 					if len(tokens)-i > 4 and tokens[i + 4].type == TokenTypes.AMOUNT:
 						program.add_node(ASTNode.CreateAccount(tokens[i+1].value, tokens[i+2].value, tokens[i+3].value, float(tokens[i+4].value)))
 						i += 5

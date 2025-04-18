@@ -4,7 +4,7 @@ import Parser
 
 def specification_tests():
     #Use unittest module  and print "pass" or "fail"     
-    print("Test where used to test Lexer: feel free to change")  
+    print("Test where used to test Lexer (and Parser): feel free to change")  
 
     tests = {
             "create_account JD123456 Jane Doe",
@@ -15,7 +15,8 @@ def specification_tests():
             "exit",
             "negative tests",
             "deposit 40 from JS234234",
-            "create_account something Name Too"
+            "create_account something Name Too",
+            "create_account AB554433 Jane Doe 200.00"
              }
     for test in tests:
         print(test)        
