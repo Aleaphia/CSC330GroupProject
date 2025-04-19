@@ -32,8 +32,20 @@ def specification_tests():
         except Exception as e:
             print(e)
             print()
+
+
+def normalOperation():
+    print("TODO")     
+
+def printIntermediates():
+    print("TODO")
+
 def main():
     print("Main is in banking.py")
+    
+    #Get user input of which type of run they want
+    #Match to call the corresponding function
+    
     specification_tests()
     
                          
