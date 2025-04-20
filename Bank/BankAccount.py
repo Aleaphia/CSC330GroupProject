@@ -1,5 +1,5 @@
 ###################################
-##### BANK ACCOUNT CLASS #####
+####### BANK ACCOUNT CLASS ########
 ###################################
 class BankAccount:
     """BankAccount class to store account details and perform transactions."""
