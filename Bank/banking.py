@@ -45,16 +45,37 @@ def normalOperation():
 def printIntermediates():
     print("TODO")
 
+def opeartionModeMenu():
+    # Operation mode selection
+    print("Startup menu")
+    print("1. Normal Operation")
+    print("2. Run Specification Tests")
+    print("3. Print Intermediates")
+
+    #Return validated input
+    return (inputValidation(input("Enter number")))    
+
+def inputValidation(selection):
+    try:
+        selection=int(selection)        #Check if input is a number
+        if selection>3 or selection<1:  #check if number is within valid range.
+            raise Exception("Number outside valid range")
+    except:
+        print("Invalid input\nPlease enter number associated with selection")
+        selection=opeartionModeMenu()    #redisplay menu on failure
+
+    return opeartionModeMenu              
+
 def main():
     print("Main is in banking.py")
+
+    # Operation mode selection
+    selection = opeartionModeMenu();
     
-    #Get user input of which type of run they want
-    #Match to call the corresponding function
-    
-    specification_tests()
-    
-                         
-                              
+    match (selection):
+        case 1:  normalOperation();
+        case 2:  specification_tests();        
+        case 3:  printIntermediates();                                     
 
 #Code to call main
 if __name__ == "__main__":
