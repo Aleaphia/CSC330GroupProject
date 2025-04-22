@@ -43,25 +43,34 @@ def specification_tests():
 
 def normalOperation():
     print("TODO: (MAKE and) Print fake account IDs")
-    #Check account exists or output error message
     print("Enter Banking Command:")
+
+    interpreter = Interpreter.Interpreter()  # Create interpreter instance
     DSLcommand = input()
-    while (DSLcommand != "exit"): 
-        try:                  
-            tokens = Lexer.Lexer.getTokenList(DSLcommand) 
+
+    while DSLcommand.strip().lower() != "exit":
+        try:
+            tokens = Lexer.Lexer.getTokenList(DSLcommand)
             for token in tokens:
-                print(token.value)                        
+                print(token.value)
             AST = Parser.Parser.parseTokens(tokens).nodes
             for node in AST:
                 print(node)
-            #Interpreter.Interpreter.run(AST)
-            print("HELP, how do I call the interpreter?")
+            
+            # Run the AST using the interpreter
+            interpreter.run(AST)
+
         except Exception as e:
-            print(e)
+            print(f"Error: {e}")
+
+        print("\nEnter Banking Command:")
         DSLcommand = input()
+
+    # exit
+    exit_tokens = Lexer.Lexer.getTokenList("exit")
+    exit_AST = Parser.Parser.parseTokens(exit_tokens).nodes
+    interpreter.run(exit_AST)
                         
-                   
-        
     
 
 def printIntermediates():
