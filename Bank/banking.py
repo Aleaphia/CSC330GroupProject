@@ -3,8 +3,10 @@
 ########################################################
 
 
+from re import I
 import Lexer
 import Parser
+import Interpreter
 
 
 def specification_tests():
@@ -40,10 +42,31 @@ def specification_tests():
 
 
 def normalOperation():
-    print("TODO")     
+    print("TODO: (MAKE and) Print fake account IDs")
+    #Check account exists or output error message
+    print("Enter Banking Command:")
+    DSLcommand = input()
+    while (DSLcommand != "exit"): 
+        try:                  
+            tokens = Lexer.Lexer.getTokenList(DSLcommand) 
+            for token in tokens:
+                print(token.value)                        
+            AST = Parser.Parser.parseTokens(tokens).nodes
+            for node in AST:
+                print(node)
+            #Interpreter.Interpreter.run(AST)
+            print("HELP, how do I call the interpreter?")
+        except Exception as e:
+            print(e)
+        DSLcommand = input()
+                        
+                   
+        
+    
 
 def printIntermediates():
     print("TODO")
+
 
 def opeartionModeMenu():
     # Operation mode selection
@@ -53,7 +76,7 @@ def opeartionModeMenu():
     print("3. Print Intermediates")
 
     #Return validated input
-    return (inputValidation(input("Enter number")))    
+    return (inputValidation(input("Enter number: ")))    
 
 def inputValidation(selection):
     try:
@@ -64,13 +87,15 @@ def inputValidation(selection):
         print("Invalid input\nPlease enter number associated with selection")
         selection=opeartionModeMenu()    #redisplay menu on failure
 
-    return opeartionModeMenu              
+    return selection              
 
 def main():
     print("Main is in banking.py")
 
     # Operation mode selection
     selection = opeartionModeMenu();
+    
+    print(selection)
     
     match (selection):
         case 1:  normalOperation();
