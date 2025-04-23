@@ -7,75 +7,77 @@ from re import I
 import Lexer
 import Parser
 import Interpreter
+import unittest
+ 
+global interpreter
 
+def specification_tests(showIntermediates):
+    interpreter = Interpreter.Interpreter()  # Create interpreter instance 
+        
+    #Test create_account
+    runBankingCode("create_account JD123456 Jane Doe", interpreter, showIntermediates)
+    balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
+    assert balance == 0, "Account failed creation"
 
-def specification_tests():
-    #Use unittest module  and print "pass" or "fail"     
-    print("Test where used to test Lexer (and Parser): feel free to change")  
+    runBankingCode("create_account JD000000 John Doe 100.50", interpreter, showIntermediates)
+    balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
+    assert balance == 100.5    
 
-    tests = {
-            "create_account JD123456 Jane Doe",
-            "create_account JD123456 John Doe 100.50",
-            "deposit 25 into JD123456",
-            "withdraw 2.33 from SJ098765",
-            "balance_of SA123456",
-            "exit",
-            "negative tests",
-            "deposit 40 from JS234234",
-            "create_account something Name Too",
-            "create_account AB554433 Jane Doe 200.00"
-             }
-    for test in tests:
-        print(test)        
-        try:
-            tokens = Lexer.Lexer.getTokenList(test)
-            for token in tokens:
-                print(token.value)
-            print("Parsing output:")
-            for node in Parser.Parser.parseTokens(tokens).nodes:
-                print(node)
+    #Test deposit
+    runBankingCode("deposit 25 into JD123456", interpreter, showIntermediates)
+    balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
+    assert balance == 25
 
-            print()
-        except Exception as e:
-            print(e)
-            print()
+    runBankingCode("deposit 25.50 into JD000000", interpreter, showIntermediates)
+    balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
+    assert balance == 126
+
+    #Test withdraw                 
+    runBankingCode("withdraw 100.00 from JD123456", interpreter, showIntermediates) #Should fail due to insufficent funds
+    balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
+    assert balance == 25 #No balance change
+
+    runBankingCode("withdraw 2.33 from JD000000", interpreter, showIntermediates)
+    balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
+    assert balance == 123.67
+
+    #Test exit
+    runBankingCode("exit", interpreter, showIntermediates)    
 
 
 def normalOperation():
+    interpreter = Interpreter.Interpreter()  # Create interpreter instance    
     print("TODO: (MAKE and) Print fake account IDs")
     print("Enter Banking Command:")
 
-    interpreter = Interpreter.Interpreter()  # Create interpreter instance
     DSLcommand = input()
 
     while DSLcommand.strip().lower() != "exit":
-        try:
-            tokens = Lexer.Lexer.getTokenList(DSLcommand)
-            for token in tokens:
-                print(token.value)
-            AST = Parser.Parser.parseTokens(tokens).nodes
-            for node in AST:
-                print(node)
-            
-            # Run the AST using the interpreter
-            interpreter.run(AST)
-
-        except Exception as e:
-            print(f"Error: {e}")
-
-        print("\nEnter Banking Command:")
-        DSLcommand = input()
+        runBankingCode(DSLcommand, interpreter)
+        #Get next command
+        DSLcommand = input("\nEnter Banking Command:\n")
 
     # exit
-    exit_tokens = Lexer.Lexer.getTokenList("exit")
-    exit_AST = Parser.Parser.parseTokens(exit_tokens).nodes
-    interpreter.run(exit_AST)
+    runBankingCode(DSLcommand, interpreter)
                         
-    
 
-def printIntermediates():
-    print("TODO")
-
+def runBankingCode(lineOfCode, interpreter, showIntermediates):
+    try:
+        tokens = Lexer.Lexer.getTokenList(lineOfCode)
+        if showIntermediates:
+            print("Token List:")            
+            for token in tokens:
+                print(token.value) 
+            print()                                                                   
+        AST = Parser.Parser.parseTokens(tokens).nodes
+        if showIntermediates:
+            print("AST:")            
+            for node in AST:
+                print(node.type)
+            print()                        
+        return interpreter.run(AST)
+    except Exception as e:
+        print(f"Error: {e}")
 
 def opeartionModeMenu():
     # Operation mode selection
@@ -86,7 +88,6 @@ def opeartionModeMenu():
 
     #Return validated input
     return (inputValidation(input("Enter number: ")))    
-
 def inputValidation(selection):
     try:
         selection=int(selection)        #Check if input is a number
@@ -99,17 +100,16 @@ def inputValidation(selection):
     return selection              
 
 def main():
-    print("Main is in banking.py")
-
+    print("Main is in banking.py")      
     # Operation mode selection
-    selection = opeartionModeMenu();
+    selection = opeartionModeMenu()
     
     print(selection)
     
     match (selection):
-        case 1:  normalOperation();
-        case 2:  specification_tests();        
-        case 3:  printIntermediates();                                     
+        case 1:  normalOperation()
+        case 2:  unittest.FunctionTestCase(specification_tests(False))    
+        case 3:  unittest.FunctionTestCase(specification_tests(True))                          
 
 #Code to call main
 if __name__ == "__main__":

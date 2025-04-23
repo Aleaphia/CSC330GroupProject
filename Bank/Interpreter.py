@@ -20,7 +20,7 @@ class Interpreter:
                 case NodeTypes.WITHDRAW:
                     self.withdraw(node)
                 case NodeTypes.BALANCE_OF:
-                    self.balance_of(node)
+                    return self.balance_of(node)
                 case NodeTypes.EXIT:
                     print("Exiting program.")  # Exit if node type is EXIT
                     break
@@ -83,3 +83,4 @@ class Interpreter:
         # Print current balance of the account
         balance = self.accounts[node.accountNumber]["balance"]
         print(f"Balance of {node.accountNumber} is ${balance:.2f}")  # Print balance
+        return balance        
