@@ -19,25 +19,25 @@ def specification_tests(showIntermediates):
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
     assert balance == 0, "Account failed creation"
 
-    runBankingCode("create_account JD000000 John Doe 100.50", interpreter, showIntermediates)
+    runBankingCode("create_account JD000000 John Doe $100.50", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
-    assert balance == 100.5    
+    assert balance == 100.5
 
     #Test deposit
-    runBankingCode("deposit 25 into JD123456", interpreter, showIntermediates)
+    runBankingCode("deposit $25 into JD123456", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
     assert balance == 25
 
-    runBankingCode("deposit 25.50 into JD000000", interpreter, showIntermediates)
+    runBankingCode("deposit $25.50 into JD000000", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
     assert balance == 126
 
     #Test withdraw                 
-    runBankingCode("withdraw 100.00 from JD123456", interpreter, showIntermediates) #Should fail due to insufficent funds
+    runBankingCode("withdraw $100.00 from JD123456", interpreter, showIntermediates) #Should fail due to insufficent funds
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
     assert balance == 25 #No balance change
 
-    runBankingCode("withdraw 2.33 from JD000000", interpreter, showIntermediates)
+    runBankingCode("withdraw $2.33 from JD000000", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
     assert balance == 123.67
 
@@ -53,7 +53,7 @@ def normalOperation():
     DSLcommand = input()
 
     while DSLcommand.strip().lower() != "exit":
-        runBankingCode(DSLcommand, interpreter)
+        runBankingCode(DSLcommand, interpreter, False)
         #Get next command
         DSLcommand = input("\nEnter Banking Command:\n")
 

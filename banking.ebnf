@@ -9,7 +9,7 @@
 /*Tokens*/
 <name> ::= <letter>+
 <account_number> ::= <letter> <letter> <digit> <digit> <digit> <digit> <digit> <digit>
-<amount> ::= <digit>+ ("." <digit> <digit>?)?
+<amount> ::= "$" <digit>+ ("." <digit> <digit>)?
 
 /*symbols*/
 <letter> ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" |
