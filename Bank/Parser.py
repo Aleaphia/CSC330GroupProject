@@ -1,11 +1,18 @@
-###################################
-############## Parser  ############
-###################################
-
+# Parser.py
+# WRITE SHORT DESCRIPTION
+#
+# Created 4/13/25 by Shoshana Altman
+# Updated....
+#
+# I certify that this computer program is all my own work.
+# Signed:
 
 import ASTNode
 from Token import TokenTypes
 
+###################################
+############## Parser  ############
+###################################
 class Parser:
 	def parseTokens(tokens):
 		program = ASTNode.Program()

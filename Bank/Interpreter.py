@@ -1,10 +1,17 @@
-###################################
-########### Interpreter  ##########
-###################################
-
+# Interpreter.py
+# WRITE SHORT DESCRIPTION
+#
+# Created 4/13/25 by Shoshana Altman
+# Updated....
+#
+# I certify that this computer program is all my own work.
+# Signed:
 
 from ASTNode import NodeTypes  # Import NodeTypes from ASTNode module
 
+###################################
+########### Interpreter  ##########
+###################################
 class Interpreter:
     def __init__(self):
         self.accounts = {}

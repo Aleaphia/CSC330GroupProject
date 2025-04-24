@@ -1,3 +1,12 @@
+# BankAccount.py
+# WRITE SHORT DESCRIPTION
+#
+# Created 4/13/25 by Shoshana Altman
+# Updated....
+#
+# I certify that this computer program is all my own work.
+# Signed:
+
 ###################################
 ####### BANK ACCOUNT CLASS ########
 ###################################

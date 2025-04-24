@@ -1,14 +1,21 @@
-###################################
-############## Lexer  #############
-###################################
-
-
-
+# Lexer.py
+# Contains the Lexer class which preforms lexical analysis on DSL commands
+# and returns a list of meaningful tokens.
+#
+# Created 4/13/25 by Shoshana Altman
+# Updated 4/17/25 by Shoshana Altman - implemented lexer
+#
+# I certify that this computer program is all my own work.
+# Signed: Shoshana Altman 
 
 import re
 import Token
 
+###################################
+#Lexer  ###########################
+###################################
 class Lexer:
+	#Class variables - used for easy identifcation of token types
 	_functionPattern = "exit|quit|deposit|withdraw|balance_of|create_account"
 	_accountNumberPattern = "[a-zA-Z]{2}\\d{6}"
 	_namePattern = "[a-zA-Z]+"
@@ -43,7 +50,7 @@ class Lexer:
 		elif (re.search("^(quit|exit)$", line) == None):
 			raise Exception("Exit sytnax not recognized")				
 						
-		
+		#Create token list
 		tokenList = []				
 		for word in line.split(' '):
 			#Look for function keywords			
