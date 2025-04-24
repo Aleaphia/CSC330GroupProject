@@ -1,6 +1,6 @@
-create_account DJ000001 Dwayne Johnson 1500.00
-create_account KH000002 Kevin Hart 1200.00
-create_account SJ000005 Scarlett Johansson 800.00
-create_account BA000003 Ben Affleck 950.00
-create_account MJ000004 Michael Jordan 1100.00
-create_account ES000006 Emma Stone 700.00
+create_account DJ000001 Dwayne Johnson $1500.00
+create_account KH000002 Kevin Hart $1200.00
+create_account SJ000005 Scarlett Johansson $800.00
+create_account BA000003 Ben Affleck $950.00
+create_account MJ000004 Michael Jordan $1100.00
+create_account ES000006 Emma Stone $700.00
