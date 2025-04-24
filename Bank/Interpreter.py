@@ -1,96 +1,103 @@
 # Interpreter.py
-# WRITE SHORT DESCRIPTION
-#
+# The Interpreter class acts like a simple bank system. It can create accounts, add or take out money, and check how much money is in an account. 
+# It follows a list of instructions and does each task using BankAccount objects.
 # Created for CSC 330: Language Design and Implementation
 # With Professor Dawn Duerre
-#
 # Created 4/13/25 by Shoshana Altman
-# Updated....
-#
+# Updated: Farhan Mohamud 4/24/2025
 # I certify that this computer program is all my own work.
-# Signed:
+# Signed: Farhan Mohamud
 
-from ASTNode import NodeTypes  # Import NodeTypes from ASTNode module
+
+from ASTNode import NodeTypes  # Import types of actions the program can do
+from BankAccount import BankAccount  # Import the BankAccount class
+
 
 ###################################
 ########### Interpreter  ##########
 ###################################
 class Interpreter:
     def __init__(self):
-        self.accounts = {}
+        # This will store all the bank accounts using the account number as the key
+        self.accounts = {}  
 
     def run(self, program):
-        # Iterate through the list of nodes directly 
+        # This method goes through each step in the program and runs it
+        result = None  # This keeps track of the last result, like a balance check
         for node in program:
-            match node.type:
-                case NodeTypes.CREATE_ACCOUNT:
-                    self.create_account(node)
-                case NodeTypes.DEPOSIT:
-                    self.deposit(node)
-                case NodeTypes.WITHDRAW:
-                    self.withdraw(node)
-                case NodeTypes.BALANCE_OF:
-                    return self.balance_of(node)
-                case NodeTypes.EXIT:
-                    print("Exiting program.")  # Exit if node type is EXIT
-                    break
-                case _:
-                    print(f"Unknown node type: {node.type}")  # Handle unknown node types
+            result = self._execute_node(node, result)
+        return result
 
-    def create_account(self, node):
-        # Create an account if it doesn't already exist
+    def _execute_node(self, node, last_result):
+        # This method checks what kind of action the current node wants to do
+        result = last_result
+        match node.type:
+            case NodeTypes.CREATE_ACCOUNT:
+                # If the node says "create account", call the create method
+                self._create_account(node)
+            case NodeTypes.DEPOSIT:
+                # If the node says "deposit", call the deposit method
+                self._deposit(node)
+            case NodeTypes.WITHDRAW:
+                # If the node says "withdraw", call the withdraw method
+                self._withdraw(node)
+            case NodeTypes.BALANCE_OF:
+                # If the node asks for the balance, call the balance method
+                result = self._balance_of(node)
+            case NodeTypes.EXIT:
+                # If the node says "exit", print Exiting Program
+                print("Exiting program.")
+            case _:
+                # If the node type isn't recognized, show an error
+                print(f"Unknown node type: {node.type}")
+        return result
+
+    # This method creates a new bank account
+    def _create_account(self, node):
         if node.accountNumber in self.accounts:
-            print(f"Account {node.accountNumber} already exists.")  # Account exists
-            return
+            # If the account already exists, let the user know
+            print(f"Account {node.accountNumber} already exists.")
+        else:
+            # Set starting balance, or 0.0 if not given
+            balance = node.amount if node.amount is not None else 0.0
+            try:
+                # Create a new BankAccount and add it to our list
+                account = BankAccount(node.firstName, node.lastName, node.accountNumber, balance)
+                self.accounts[node.accountNumber] = account
+                print(f"Account {node.accountNumber} created with balance ${balance:.2f}")
+            except ValueError as ve:
+                # If something goes wrong, show the error
+                print(f"Error creating account: {ve}")
 
-        # Set balance to node.amount or 0.0 if not provided
-        balance = node.amount if node.amount is not None else 0.0
-        # Store account information
-        self.accounts[node.accountNumber] = {
-            "name": f"{node.firstName} {node.lastName}",
-            "balance": balance
-        }
-        print(f"Account {node.accountNumber} created with balance ${balance:.2f}")  # Print success
+    # This method deposits money into an existing account
+    def _deposit(self, node):
+        account = self.accounts.get(node.accountNumber)
+        if account is not None:
+            # If account exists, deposit the money
+            account.deposit(node.amount)
+        else:
+            # If account is not found, show a message
+            print(f"Account {node.accountNumber} not found.")
 
-    def deposit(self, node):
-        # Deposit money into an existing account
-        if node.accountNumber not in self.accounts:
-            print(f"Account {node.accountNumber} not found.")  # Account not found
-            return
+    # This method withdraws money from an existing account
+    def _withdraw(self, node):
+        account = self.accounts.get(node.accountNumber)
+        if account is not None:
+            # If account exists, withdraw the money
+            account.withdraw(node.amount)
+        else:
+            # If account is not found, show a message
+            print(f"Account {node.accountNumber} not found.")
 
-        if node.amount <= 0:
-            print(f"Invalid deposit amount: ${node.amount}. Must be > 0.")  # Invalid amount
-            return
-
-        # Add deposit amount to account balance
-        self.accounts[node.accountNumber]["balance"] += node.amount
-        print(f"Deposited ${node.amount:.2f}. New balance: ${self.accounts[node.accountNumber]['balance']:.2f}")  # Print new balance
-
-    def withdraw(self, node):
-        # Withdraw money from an existing account
-        if node.accountNumber not in self.accounts:
-            print(f"Account {node.accountNumber} not found.")  # Account not found
-            return
-
-        if node.amount <= 0:
-            print(f"Invalid withdrawal amount: ${node.amount}. Must be > 0.")  # Invalid amount
-            return
-
-        if self.accounts[node.accountNumber]["balance"] < node.amount:
-            print(f"Insufficient funds in {node.accountNumber}.")  # Not enough balance
-            return
-
-        # Subtract withdrawal amount from account balance
-        self.accounts[node.accountNumber]["balance"] -= node.amount
-        print(f"Withdrew ${node.amount:.2f}. New balance: ${self.accounts[node.accountNumber]['balance']:.2f}")  # Print new balance
-
-    def balance_of(self, node):
-        # Check balance of an existing account
-        if node.accountNumber not in self.accounts:
-            print(f"Account {node.accountNumber} not found.")  # Account not found
-            return
-
-        # Print current balance of the account
-        balance = self.accounts[node.accountNumber]["balance"]
-        print(f"Balance of {node.accountNumber} is ${balance:.2f}")  # Print balance
-        return balance        
+    # This method shows the current balance of an account
+    def _balance_of(self, node):
+        balance = None
+        account = self.accounts.get(node.accountNumber)
+        if account is not None:
+            # If account exists, get and print the balance
+            balance = account.get_balance()
+            print(f"Balance of {node.accountNumber} is ${balance:.2f}")
+        else:
+            # If account is not found, show a message
+            print(f"Account {node.accountNumber} not found.")
+        return balance
