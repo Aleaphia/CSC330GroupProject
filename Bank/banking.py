@@ -20,21 +20,6 @@ import Interpreter
 import unittest
 
 ########################################################
-# Load Sample Accounts #################################
-########################################################
-def load_sample_accounts(interpreter, filename="Accounts.txt", showIntermediates=False):
-    print("\nInitializing accounts:\n")
-    try:
-        with open(filename, "r") as file:
-            for line in file:
-                line = line.strip()
-                if line:
-                    runBankingCode(line, interpreter, showIntermediates)
-        print("Accounts successfully loaded.\n")
-    except FileNotFoundError:
-        print(f"File '{filename}' not found. No accounts loaded.\n")
-
-########################################################
 # Specification Test  ##################################
 ########################################################
 def specification_tests(showIntermediates):
@@ -89,6 +74,21 @@ def normalOperation():
 
     # Handle exit
     runBankingCode(DSLcommand, interpreter, False)
+    
+########################################################
+# Load Sample Accounts #################################
+########################################################
+def load_sample_accounts(interpreter, filename="Accounts.txt", showIntermediates=False):
+    print("\nInitializing accounts:\n")
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                line = line.strip()
+                if line:
+                    runBankingCode(line, interpreter, showIntermediates)
+        print("Accounts successfully loaded.\n")
+    except FileNotFoundError:
+        print(f"File '{filename}' not found. No accounts loaded.\n")    
 
 ########################################################
 # Run Banking Code  ####################################
