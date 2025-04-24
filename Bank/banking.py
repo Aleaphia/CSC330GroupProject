@@ -5,10 +5,10 @@
 # With Professor Dawn Duerre
 #
 # Created 4/13/25 by Shoshana Altman
-# Updated....
+# Updated by: Farhan Mohamud 4/24/25
 #
 # We certify that this computer program is all our own work.
-# Signed: Shoshana Altman, 
+# Signed: Shoshana Altman, Farhan Mohamud
 
 import re
 from re import I
@@ -16,14 +16,29 @@ import Lexer
 import Parser
 import Interpreter
 import unittest
- 
+
+########################################################
+# Load Sample Accounts #################################
+########################################################
+def load_sample_accounts(interpreter, filename="Accounts.txt", showIntermediates=False):
+    print("\nInitializing accounts:\n")
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                line = line.strip()
+                if line:
+                    runBankingCode(line, interpreter, showIntermediates)
+        print("Accounts successfully loaded.\n")
+    except FileNotFoundError:
+        print(f"File '{filename}' not found. No accounts loaded.\n")
+
 ########################################################
 # Specification Test  ##################################
 ########################################################
 def specification_tests(showIntermediates):
     interpreter = Interpreter.Interpreter()  # Create interpreter instance 
         
-    #Test create_account
+    # Test create_account
     runBankingCode("create_account JD123456 Jane Doe", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
     assert balance == 0, "Account creation failed"
@@ -32,25 +47,25 @@ def specification_tests(showIntermediates):
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
     assert balance == 100.5, "Account creation with initial balance failed"
 
-    #Test deposit
+    # Test deposit
     runBankingCode("deposit $25 into JD123456", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
-    assert balance == 25, "Incorrect ammount following deposit"
+    assert balance == 25, "Incorrect amount following deposit"
 
     runBankingCode("deposit $25.50 into JD000000", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
-    assert balance == 126, "Incorrect ammount following deposit"
+    assert balance == 126, "Incorrect amount following deposit"
 
-    #Test withdraw                 
-    runBankingCode("withdraw $100.00 from JD123456", interpreter, showIntermediates) #Should fail due to insufficent funds
+    # Test withdraw                 
+    runBankingCode("withdraw $100.00 from JD123456", interpreter, showIntermediates)  # Should fail due to insufficient funds
     balance = runBankingCode("balance_of JD123456", interpreter, showIntermediates)
-    assert balance == 25, "Incorrect ammount following withdrawl" #There should be no balance change
+    assert balance == 25, "Incorrect amount following withdrawal"  # No balance change expected
 
     runBankingCode("withdraw $2.33 from JD000000", interpreter, showIntermediates)
     balance = runBankingCode("balance_of JD000000", interpreter, showIntermediates)
-    assert balance == 123.67, "Incorrect ammount following withdrawl"
+    assert balance == 123.67, "Incorrect amount following withdrawal"
 
-    #Test exit
+    # Test exit
     runBankingCode("exit", interpreter, showIntermediates)    
 
 ########################################################
@@ -58,93 +73,84 @@ def specification_tests(showIntermediates):
 ########################################################
 def normalOperation():
     interpreter = Interpreter.Interpreter()  # Create interpreter instance
-    
-    #Create 5-8 accounts and fills them with money
-    print("Initializing accounts:")
-    for DSLcommand in open('data.txt','r'): #Read in DSL commands 
-        runBankingCode(DSLcommand, interpreter, False) 
-    print() #Style
-    
-    #User interaction
+
+    # Load initial accounts from file
+    load_sample_accounts(interpreter)
+
     print("Enter Banking Command:")
     DSLcommand = input()
 
-    #continue loop until end statement is found
-    while re.search("^(quit|exit)$", DSLcommand.strip().lower()) == None:
+    # Continue loop until exit command is found
+    while re.search("^(quit|exit)$", DSLcommand.strip().lower()) is None:
         runBankingCode(DSLcommand, interpreter, False)
-        #Get next command
         DSLcommand = input("\nEnter Banking Command:\n")
 
-    # exit
+    # Handle exit
     runBankingCode(DSLcommand, interpreter, False)
-                        
+
 ########################################################
 # Run Banking Code  ####################################
 ########################################################
 def runBankingCode(lineOfCode, interpreter, showIntermediates):
     try:
-        #Get tokens from lexer        
+        # Get tokens from lexer        
         tokens = Lexer.Lexer.getTokenList(lineOfCode)
-        if showIntermediates: #option to print tokens
-            print("Token List:")            
+        if showIntermediates:
+            print("Token List:")
             for token in tokens:
-                print(token.value) 
-            print() 
-        
-        #Get AST from parser                                                                              
+                print(token.value)
+            print()
+
+        # Get AST from parser
         AST = Parser.Parser.parseTokens(tokens).nodes
-        if showIntermediates: #option to print AST
-            print("AST:")            
+        if showIntermediates:
+            print("AST:")
             for node in AST:
                 print(node.type)
             print()
 
-        #Run AST with interpreter                                  
+        # Run AST with interpreter
         return interpreter.run(AST)
-    
+
     except Exception as e:
-        #Print errors        
         print(f"Error: {e}")
 
 ########################################################
 # Display Menu  ########################################
 ########################################################
 def displayMenu():
-    # Operation mode selection
     print("Startup menu")
     print("1. Normal Operation")
     print("2. Run Specification Tests")
     print("3. Print Intermediates")
+    return inputValidation(input("Enter number: ")) 
 
-    #Return validated input
-    return (inputValidation(input("Enter number: "))) 
 ########################################################
 # Input Validation  ####################################
 ########################################################
 def inputValidation(selection):
     try:
-        selection=int(selection)        #Check if input is a number
-        if selection>3 or selection<1:  #check if number is within valid range.
+        selection = int(selection)
+        if selection > 3 or selection < 1:
             raise Exception("Number outside valid range")
     except:
         print("Invalid input\nPlease enter number associated with selection")
-        selection=displayMenu()    #redisplay menu on failure
-
-    return selection              
+        selection = displayMenu()
+    return selection
 
 ########################################################
 # Main  ################################################
 ########################################################
 def main():
-    # Operation mode selection
     selection = displayMenu()
-    
-    # Start correct run
-    match (selection):
-        case 1:  normalOperation()
-        case 2:  unittest.FunctionTestCase(specification_tests(False))  #without intermediates
-        case 3:  unittest.FunctionTestCase(specification_tests(True))   #with intermediates  
 
-#Code to call main
+    match selection:
+        case 1:
+            normalOperation()
+        case 2:
+            unittest.TextTestRunner().run(unittest.FunctionTestCase(lambda: specification_tests(False)))
+        case 3:
+            unittest.TextTestRunner().run(unittest.FunctionTestCase(lambda: specification_tests(True)))
+
 if __name__ == "__main__":
-    main()    
+    main()
