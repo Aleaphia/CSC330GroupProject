@@ -1,14 +1,16 @@
 # ASTNode.py
-# WRITE SHORT DESCRIPTION
+# The ASTNode is a supertype with subtypes accounting for program structure
+# These are all kept and accessed via a 'Program' class.
+# Every node is a complete statement, containing all the necessary information to execute the statement
 #
 # Created for CSC 330: Language Design and Implementation
 # With Professor Dawn Duerre
 #
 # Created 4/13/25 by Shoshana Altman
-# Updated....
+# Updated 4/15/25 by Zander Gall
 #
 # I certify that this computer program is all my own work.
-# Signed:
+# Signed: Zander
 
 from enum import Enum
 

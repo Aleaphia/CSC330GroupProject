@@ -5,10 +5,10 @@
 # With Professor Dawn Duerre
 #
 # Created 4/13/25 by Shoshana Altman
-# Updated....
+# Updated 4/17/25 by Zander Gall
 #
 # I certify that this computer program is all my own work.
-# Signed:
+# Signed: Zander
 
 import ASTNode
 from Token import TokenTypes

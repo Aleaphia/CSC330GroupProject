@@ -5,10 +5,11 @@
 # With Professor Dawn Duerre
 #
 # Created 4/13/25 by Shoshana Altman
+# Updated by: Zander Gall 4/15/25
 # Updated by: Farhan Mohamud 4/24/25
 #
 # We certify that this computer program is all our own work.
-# Signed: Shoshana Altman, Farhan Mohamud
+# Signed: Shoshana Altman, Farhan Mohamud, Zander Gall
 
 import re
 from re import I
@@ -95,15 +96,14 @@ def runBankingCode(lineOfCode, interpreter, showIntermediates):
     try:
         # Get tokens from lexer        
         tokens = Lexer.Lexer.getTokenList(lineOfCode)
+        # Get AST from parser
+        AST = Parser.Parser.parseTokens(tokens).nodes
         if showIntermediates:
             print("Token List:")
             for token in tokens:
                 print(token.value)
             print()
 
-        # Get AST from parser
-        AST = Parser.Parser.parseTokens(tokens).nodes
-        if showIntermediates:
             print("AST:")
             for node in AST:
                 print(node.type)
