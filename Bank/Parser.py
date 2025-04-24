@@ -1,5 +1,6 @@
 # Parser.py
-# WRITE SHORT DESCRIPTION
+# Take in a list of tokens and creates isolated, executable expressions out of them
+# Ensures that all the correct token types are present for each statement given
 #
 # Created for CSC 330: Language Design and Implementation
 # With Professor Dawn Duerre
@@ -21,11 +22,14 @@ class Parser:
 		program = ASTNode.Program()
 		i = 0
 		while i < len(tokens):
+			# Ensure that the first token is a function/command
 			if tokens[i].type != TokenTypes.FUNCTION:
 				raise Exception("Expected a function! Got " + tokens[i].value + " instead! Token #" + i)
 			
+			# Check for all the expected tokens and create an ASTNode subtype for the command, putting it in program
 			match tokens[i].value:
 				case "create_account":
+					# expect account_number, name, name, and optional amount
 					if len(tokens)-i < 4:
 						raise Exception("Expected 'account_number name name' or 'account_number name name amount' after 'create_account' statement!")
 					if tokens[i + 1].type != TokenTypes.ACCOUNT_NUMBER:
