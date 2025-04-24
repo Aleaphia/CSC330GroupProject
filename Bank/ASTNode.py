@@ -1,6 +1,9 @@
 # ASTNode.py
 # WRITE SHORT DESCRIPTION
 #
+# Created for CSC 330: Language Design and Implementation
+# With Professor Dawn Duerre
+#
 # Created 4/13/25 by Shoshana Altman
 # Updated....
 #

@@ -2,6 +2,9 @@
 # Contains the Lexer class which preforms lexical analysis on DSL commands
 # and returns a list of meaningful tokens.
 #
+# Created for CSC 330: Language Design and Implementation
+# With Professor Dawn Duerre
+#
 # Created 4/13/25 by Shoshana Altman
 # Updated 4/15/25 by Shoshana Altman - added Token class
 # Updated 4/17/25 by Shoshana Altman - added enumerated TokenType
