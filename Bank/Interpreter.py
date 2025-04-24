@@ -1,10 +1,13 @@
 # Interpreter.py
 # The Interpreter class acts like a simple bank system. It can create accounts, add or take out money, and check how much money is in an account. 
 # It follows a list of instructions and does each task using BankAccount objects.
+#
 # Created for CSC 330: Language Design and Implementation
 # With Professor Dawn Duerre
+#
 # Created 4/13/25 by Shoshana Altman
 # Updated: Farhan Mohamud 4/24/2025
+#
 # I certify that this computer program is all my own work.
 # Signed: Farhan Mohamud
 
